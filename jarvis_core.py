@@ -5,7 +5,85 @@ elif "daily verse" in command:
     index = datetime.date.today().toordinal() % len(bible_verses)
     return bible_verses[index]elif verses import bible_verses
 import random
-import datetime bible_verses = [
+import datetime bible_verses = [import datetime
+import random
+import pyttsx3
+import speech_recognition as sr
+
+# Initialize speech engine
+engine = pyttsx3.init()
+engine.setProperty('rate', 165)
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        recognizer.adjust_for_ambient_noise(source, duration=1)
+        audio = recognizer.listen(source)
+
+    try:
+        command = recognizer.recognize_google(audio)
+        print("You:", command)
+        return command.lower()
+    except sr.UnknownValueError:
+        return ""
+    except sr.RequestError:
+        return ""
+
+def jarvis_response(command):
+    if "time" in command:
+        now = datetime.datetime.now()
+        return f"The current time is {now.strftime('%I:%M %p')}."
+
+    elif "date" in command:
+        today = datetime.date.today()
+        return f"Today's date is {today.strftime('%B %d, %Y')}."
+
+    elif "hello" in command or "hi" in command:
+        return random.choice([
+            "Online and operational.",
+            "Systems active.",
+            "Awaiting your command."
+        ])
+
+    elif "status" in command:
+        return "All systems nominal."
+
+    elif "random number" in command:
+        return f"Generated number: {random.randint(1, 100)}"
+
+    elif "verse" in command:
+        return "Philippians 4:13 — I can do all things through Christ who strengthens me."
+
+    elif "shutdown" in command or "exit" in command:
+        return "Shutting down."
+
+    else:
+        return "Command not recognized."
+
+
+# ===== MAIN LOOP =====
+
+print("Jarvis Core Initializing...")
+speak("Jarvis core online.")
+
+while True:
+    command = listen()
+    
+    if not command:
+        continue
+
+    response = jarvis_response(command)
+    
+    print("Jarvis:", response)
+    speak(response)
+
+    if "shutdown" in command or "exit" in command:
+        break
     "Genesis 1:1 — In the beginning God created the heavens and the earth.",
     "Exodus 14:14 — The Lord will fight for you; you need only to be still.",
     "Deuteronomy 31:6 — Be strong and courageous. Do not be afraid.",
