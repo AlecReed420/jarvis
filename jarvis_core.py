@@ -1,5 +1,14 @@
 import datetime
 import random
+import pyttsx3
+
+# Initialize speech engine
+engine = pyttsx3.init()
+engine.setProperty('rate', 165)  # Speed of voice
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
 
 def jarvis_response(command):
     command = command.lower().strip()
@@ -39,13 +48,15 @@ def jarvis_response(command):
 # ===== MAIN LOOP =====
 
 print("Jarvis Core Initializing...")
-print("Type 'exit' to shut down.\n")
+speak("Jarvis core online.")
 
 while True:
     user_input = input("You: ")
     
     response = jarvis_response(user_input)
+    
     print("Jarvis:", response)
+    speak(response)
 
     if "exit" in user_input.lower() or "shutdown" in user_input.lower():
         break
